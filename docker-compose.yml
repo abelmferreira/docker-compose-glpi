@@ -44,8 +44,19 @@ services:
      - GLPI_MYSQL_PASS=glpipass
      - GLPI_MYSQL_DB=glpi
 
+ phpmyadmin:
+   image: phpmyadmin/phpmyadmin:latest
+   container_name: 'phpmyadmin'
+   labels:
+      conteiner.description: "PHPmyadmin Webpage"
+   ports:
+      - 8080:80
+   volumes:
+      - /sessions
+   restart: always
+   environment:
+      - TZ=America/Sao_Paulo
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
 
-# Creating database dumps
-# docker exec some-mysql sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PA
-# docker run -it --rm -v /bkpmysql:/bkpmysql mysql:5.7 sh -c 'exec mysqldump -h host -uroot -p glpi > /bkpmysql/glpi.sql'
 
