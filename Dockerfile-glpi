@@ -1,0 +1,54 @@
+
+ARG UBUNTU_VERSION=16.04
+FROM ubuntu:${UBUNTU_VERSION}
+
+ARG BUILD_DATE=not_informed
+ENV GLPI_VERSION=9.1.3
+
+LABEL build_version="version:- ${GLPI_VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="Abel ferreira <abelmferreira@gmail.com>"
+LABEL description="Apache and PHP server for GLPI"
+
+ENV TZ=America/Sao_Paulo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update
+
+# PHP 7.0
+RUN	apt-get install -y \
+		apache2 \
+		libapache2-mod-php \
+		php \
+		php-json \
+		php-mbstring \
+		php-curl \
+		php-cli \
+		php-xml \
+		php-mysql \
+		php-ldap \
+		php-xmlrpc \
+		php-curl \
+		php-gd \
+		php-apcu \
+		php-imap \
+		curl \
+		wget \
+		nano \
+		iputils-ping \
+		composer \
+		zip \
+		unzip
+
+# Apt-get cleanup
+RUN apt-get clean && \
+	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+
+COPY scripts/glpi-start.sh /opt
+RUN chmod +x /opt/glpi-start.sh
+
+EXPOSE 80 443
+
+WORKDIR /var/www/html
+
+CMD /opt/glpi-start.sh
+
