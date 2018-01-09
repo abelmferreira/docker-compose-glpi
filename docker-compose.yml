@@ -30,7 +30,7 @@ services:
    depends_on:
      - mysql
    labels:
-      conteiner.description: "GLPI Web Server"
+      conteiner.description: "GLPI Web Server Apache"
    volumes:
      - ./html:/var/www/html
      - ./scripts/glpi-start.sh:/opt/glpi-start.sh:ro
